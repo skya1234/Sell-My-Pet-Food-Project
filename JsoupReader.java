@@ -1,11 +1,23 @@
+import java.io.File;
 import java.io.IOException;  
 import org.jsoup.Jsoup;  
-import org.jsoup.nodes.Document;  
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.util.*;
 
 public class JsoupReader {
     public static void main( String[] args ) throws IOException{  
-        Document doc = Jsoup.connect("https://www.ebay.com/urw/Apple-iPhone-XR-64-GB-Black-Unlocked-Dual-SIM-/product-reviews/13023706562?_itm=296269616776").get();  
-        String title = doc.title();  
-        System.out.println("title is: " + title);  
+        File htmlWebPage = new File("reviewspage.txt");
+        Document doc = Jsoup.parse(htmlWebPage, "UTF-8");
+        Elements reviewTextList = doc.getElementsByAttributeValue("data-test", "review-card--text");
+        Elements reviewNameList = doc.getElementsByAttributeValue("data-test", "review-card--username");
+        int numReviews = 0;
+        for (Element obj : reviewTextList) {
+            numReviews +=1;
+            System.out.println("Review Number " + numReviews + ": " + obj.text());
+            
+        }
     }
 }
